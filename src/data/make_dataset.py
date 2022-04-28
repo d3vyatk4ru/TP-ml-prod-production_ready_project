@@ -1,30 +1,38 @@
+""" Subpackage for load data"""
+
 import logging
 from typing import Tuple
+import sys
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.entity.split_params import SplittingParams
+# from ..entity.split_params import SplittingParams
 
 
 logger = logging.getLogger(__name__)
+handler = logging.StreamHandler(sys.stdout)
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 
 def read_dataset(path: str) -> pd.DataFrame:
-    ''' Read dataset from csv file '''
+    """ Read dataset from csv file """
 
-    logger.info(f'Loading dataset from {path}...')
+    logger.info('Loading dataset from %s...', path)
 
     data = pd.read_csv(path)
 
-    logger.info(f'Finished loading dataset from {path}!')
-    logger.info(f'The dataset has {data.shape} size')
+    logger.info('Finished loading dataset from %s!', path)
+    logger.info('The dataset has %s size', data.shape)
 
     return data
 
 
-def split_train_val_data(data: pd.DataFrame, params: SplittingParams) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    ''' Split data to train and validation '''
+def split_train_val_data(data: pd.DataFrame,
+                         params,
+                         ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """ Split data to train and validation """
 
     logger.info('Splitting dataset to train and test...')
 
@@ -36,4 +44,4 @@ def split_train_val_data(data: pd.DataFrame, params: SplittingParams) -> Tuple[p
 
     logger.info('Finished splitting dataset!')
 
-    return (train_data, test_data)
+    return train_data, test_data
