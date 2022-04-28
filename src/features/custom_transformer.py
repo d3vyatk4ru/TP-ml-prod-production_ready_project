@@ -1,5 +1,6 @@
+""" Make custom transformer """
+
 import logging
-import pandas as pd
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import (
@@ -7,16 +8,18 @@ from sklearn.base import (
     TransformerMixin,
 )
 
-from src.entity.custom_transformer_params import TransformerParams
+# from ..entity.custom_transformer_params import TransformerParams
 
 
 logger = logging.getLogger(__name__)
 
 
-class CustomTransformes(BaseEstimator, TransformerMixin):
-    ''' Class realization custom version of transfomer '''
+class CustomTransformer(BaseEstimator, TransformerMixin):
+    """ Class realization custom version of transfomer """
 
-    def __init__(self, params: TransformerParams) -> None:
+    def __init__(self,
+                 params,
+                 ) -> None:
         self.params = params
         self.scaler = StandardScaler()
 

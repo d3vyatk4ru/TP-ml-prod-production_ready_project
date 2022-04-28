@@ -1,30 +1,32 @@
+""" Training model pipeline """
+
 from dataclasses import dataclass
+from marshmallow_dataclass import class_schema
+import yaml
 
-from src.features.custom_transformer import CustomTransformes
-
+from .custom_transformer_params import TransformerParams
 from .split_params import SplittingParams
 from .feature_params import FeatureParams
 from .train_params import TrainingParams
 
-from marshmallow_dataclass import class_schema
-import yaml
-
 
 @dataclass
 class TrainingPipelineParams:
+    """ Structure for pipeline parameters """
     input_data_path: str
     output_model_path: str
     metric_path: str
     splitting_params: SplittingParams
     feature_params: FeatureParams
     train_params: TrainingParams
-    custom_transformer_params: CustomTransformes
+    custom_transformer_params: TransformerParams
 
 
 TrainingPipelineParamsSchema = class_schema(TrainingPipelineParams)
 
 
-def read_training_pipelineparams(path: str):
-    with open(path, 'r') as input_stream:
+def read_training_pipeline_params(path: str):
+    """ Read config for model training """
+    with open(path, 'r', encoding='utf-8') as input_stream:
         schema = TrainingPipelineParamsSchema()
         return schema.load(yaml.safe_load(input_stream))

@@ -1,3 +1,5 @@
+""" __init__ subpackage """
+
 from .model_fit_predict import (
     train_model,
     predict_model,
