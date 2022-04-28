@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
 
 # score
 from sklearn.metrics import accuracy_score
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 def train_model(features: pd.DataFrame, target: pd.Series, train_params: TrainingParams) -> SklearnClassificationModel:
     
-    logger.info('Start loading model...')
+    logger.info(f'Start loading {train_params.model_type} model...')
 
     if train_params.model_type == 'LogisticRegression':
         model = LogisticRegression()
@@ -53,12 +54,22 @@ def predict_model(model: Pipeline, feature: pd.DataFrame) -> np.ndarray:
 
     return predict
 
+
 def evaluate_model(predict: np.ndarray, target: pd.Series) -> Dict[str, float]:
 
-    logger.info('Start calculate metrics for model')
+    logger.info('Start calculate metrics for model...')
 
     return {
         'acc': accuracy_score(target.toarray(), predict),
         'f1': f1_score(target.toarray(), predict, average='macro'),
         'roc_auc': roc_auc_score(target.toarray(), predict),
     }
+
+
+def create_inference_pipeline(
+    model: SklearnClassificationModel, transformer: ColumnTransformer
+) -> Pipeline:
+    return Pipeline([
+        ("feature_part", transformer),
+        ("model_part", model)
+    ])

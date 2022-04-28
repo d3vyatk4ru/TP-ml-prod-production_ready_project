@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from src.features.custom_transformer import CustomTransformes
+
 from .split_params import SplittingParams
 from .feature_params import FeatureParams
 from .train_params import TrainingParams
@@ -16,6 +18,7 @@ class TrainingPipelineParams:
     splitting_params: SplittingParams
     feature_params: FeatureParams
     train_params: TrainingParams
+    custom_transformer_params: CustomTransformes
 
 
 TrainingPipelineParamsSchema = class_schema(TrainingPipelineParams)
