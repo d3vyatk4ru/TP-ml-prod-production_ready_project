@@ -1,6 +1,7 @@
-input_data_path: "../data/raw/heart_cleveland_upload.csv"
-output_model_path: "models/model.pkl"
-metric_path: "models/metrics.json"
+input_data_path: "data/raw/heart_cleveland_upload.csv"
+metric_path: "models/metrics_train_log_reg.json"
+save_model: "models/log_reg.pkl"
+save_transformer: "models/transformer_log_reg.pkl"
 
 splitting_params: 
   test_size: 0.1

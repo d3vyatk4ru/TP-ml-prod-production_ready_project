@@ -16,6 +16,8 @@ class TrainingPipelineParams:
     input_data_path: str
     output_model_path: str
     metric_path: str
+    save_model: str
+    save_transformer: str
     splitting_params: SplittingParams
     feature_params: FeatureParams
     train_params: TrainingParams

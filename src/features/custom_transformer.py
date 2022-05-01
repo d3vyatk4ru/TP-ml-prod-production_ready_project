@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class CustomTransformer(BaseEstimator, TransformerMixin):
-    """ Class realization custom version of transfomer """
+    """ Class realization custom version of transformer """
 
     def __init__(self,
                  params,
