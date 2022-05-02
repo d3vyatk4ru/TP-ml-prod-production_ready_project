@@ -1,4 +1,4 @@
-""" __init__ modudel in subpackage for load data"""
+""" __init__ module in subpackage for load data"""
 
 from .make_dataset import split_train_val_data, read_dataset
 

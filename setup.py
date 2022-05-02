@@ -1,8 +1,9 @@
+""" Installer necessary lib """
 from setuptools import find_packages, setup
 
 REQUIREMENTS_TXT = 'requirements.txt'
 
-with open(REQUIREMENTS_TXT) as f:
+with open(REQUIREMENTS_TXT, 'r', encoding='utf-8') as f:
     required = f.read().splitlines()
 
 setup(

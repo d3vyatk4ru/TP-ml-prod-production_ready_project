@@ -1,15 +1,13 @@
 """ Make fir and predict model """
-
+import pickle
 import sys
 import logging
-from typing import Dict, Union
+from typing import Dict, Union, NoReturn
 
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
 
 # score
 from sklearn.metrics import accuracy_score
@@ -50,7 +48,7 @@ def train_model(features: pd.DataFrame,
     return model
 
 
-def predict_model(model: Pipeline,
+def predict_model(model: SklearnClassificationModel,
                   feature: pd.DataFrame
                   ) -> np.ndarray:
     """ Make predict model """
@@ -77,11 +75,33 @@ def evaluate_model(predict: np.ndarray,
     }
 
 
-def create_inference_pipeline(model: SklearnClassificationModel,
-                              transformer: ColumnTransformer
-                              ) -> Pipeline:
-    """ Make inference pipeline for model """
-    return Pipeline([
-        ("feature_part", transformer),
-        ("model_part", model)
-    ])
+def save_model(model: SklearnClassificationModel,
+               path: str
+               ) -> NoReturn:
+    """ Save model to file """
+    with open(path, 'wb') as file:
+        pickle.dump(model, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    logger.info('Model saved!')
+
+
+def load_model(path: str):
+    """ Load model from path """
+    logger.info('Model start loading...')
+    with open(path, 'rb') as model:
+        return pickle.load(model)
+
+
+def save_transformer(transformer, path: str):
+    """ Save transformer from path """
+    with open(path, 'wb') as file:
+        pickle.dump(transformer, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    logger.info('Transformer saved!')
+
+
+def load_transformer(path: str):
+    """ Load transformer from path """
+    logger.info('Transformer start loading...')
+    with open(path, 'rb') as transformer:
+        return pickle.load(transformer)

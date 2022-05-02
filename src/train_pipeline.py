@@ -1,3 +1,4 @@
+""" Training pipline for ml model """
 
 import json
 import logging
@@ -25,9 +26,10 @@ from features.make_features import (
 
 from models.model_fit_predict import (
     train_model,
-    create_inference_pipeline,
     predict_model,
     evaluate_model,
+    save_model,
+    save_transformer,
 )
 
 
@@ -38,6 +40,7 @@ logger.addHandler(handler)
 
 
 def train_pipeline(config_path: str):
+    """ train pipeline """
     training_pipeline_params = read_training_pipeline_params(config_path)
 
     return run_train_pipeline(training_pipeline_params)
@@ -45,8 +48,8 @@ def train_pipeline(config_path: str):
 
 def run_train_pipeline(training_pipeline_params: TrainingPipelineParams):
     """ Launching pipeline for training ml model """
-    
-    logger.info(f'Start train pipeline with {training_pipeline_params.train_params.model_type}...')
+
+    logger.info('Start train pipeline with %s...', training_pipeline_params.train_params.model_type)
 
     data: pd.DataFrame = read_dataset(training_pipeline_params.input_data_path)
 
@@ -71,41 +74,56 @@ def run_train_pipeline(training_pipeline_params: TrainingPipelineParams):
     )
 
     logger.info('The target column was write to other list')
-    logger.info(f'train_df.shape is equal {train_df.shape}')
-    logger.info(f'val_df.shape is equal {valid_df.shape}')
+    logger.info('train_df.shape is equal %s', train_df.shape)
+    logger.info('val_df.shape is equal %s', valid_df.shape)
 
     transformer = build_feature_transformer(training_pipeline_params.feature_params)
 
     transformer.fit(train_df)
 
-    train_features = make_features(transformer, train_df)
+    save_transformer(transformer, training_pipeline_params.save_transformer)
+
+    train_features = make_features(
+        transformer,
+        train_df
+    )
 
     model = train_model(
         train_features, train_target, training_pipeline_params.train_params
     )
 
-    inference_pipeline = create_inference_pipeline(model, transformer)
+    save_model(
+        model,
+        training_pipeline_params.save_model,
+    )
 
-    pred = predict_model(
-        inference_pipeline,
+    valid_feature = make_features(
+        transformer,
         valid_df,
     )
 
+    predict = predict_model(
+        model,
+        valid_feature,
+    )
+
     metrics = evaluate_model(
-        pred,
+        predict,
         valid_target,
     )
 
-    logger.info(f'Meterics: {metrics}')
+    logger.info('Metrics: %s', metrics)
 
-    with open(training_pipeline_params.metric_path, 'w') as file_metrics:
+    with open(training_pipeline_params.metric_path, 'w', encoding='utf-8') as file_metrics:
         json.dump(metrics, file_metrics)
 
     return metrics
 
+
 @click.command(name='train_pipeline')
 @click.argument('config_path', default='../configs/train_config.yaml')
 def train_pipeline_command(config_path: str):
+    """ Make start for terminal """
     train_pipeline(config_path)
 
 
