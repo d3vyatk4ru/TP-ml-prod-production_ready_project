@@ -7,6 +7,7 @@ import yaml
 
 @dataclass()
 class PredictPipelineParams:
+    """ Structure for pipeline parameters """
     input_data_path: str
     model_path: str
     predict_path: str

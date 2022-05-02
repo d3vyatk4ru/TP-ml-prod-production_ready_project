@@ -94,7 +94,7 @@ def load_model(path: str):
 
 def save_transformer(transformer, path: str):
     """ Save transformer from path """
-    with open(path, 'wb', encoding='utf-8') as file:
+    with open(path, 'wb') as file:
         pickle.dump(transformer, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     logger.info('Transformer saved!')

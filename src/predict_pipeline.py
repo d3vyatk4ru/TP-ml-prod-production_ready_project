@@ -1,4 +1,5 @@
-import json
+""" Predicting pipline for ml model """
+
 import logging
 import sys
 
@@ -16,15 +17,12 @@ from data.make_dataset import (
 )
 
 from features.make_features import (
-    extract_target,
     drop_target,
     make_features,
 )
 
 from models.model_fit_predict import (
-    train_model,
     predict_model,
-    evaluate_model,
     load_model,
     load_transformer,
 )
@@ -82,6 +80,7 @@ def predict_pipeline_run(predict_pipeline_params: PredictPipelineParams):
 @click.command(name='predict_pipeline')
 @click.argument('config_path')
 def predict_pipeline_command(config_path: str):
+    """ Make start for terminal """
     predict_pipeline(config_path)
 
 
