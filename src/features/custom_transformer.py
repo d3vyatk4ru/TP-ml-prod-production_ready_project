@@ -1,8 +1,13 @@
 """ Make custom transformer """
 
 import logging
+from typing import NoReturn
 
-from sklearn.preprocessing import StandardScaler
+import pandas as pd
+from sklearn.preprocessing import (
+    StandardScaler,
+)
+
 from sklearn.base import (
     BaseEstimator,
     TransformerMixin,
@@ -15,12 +20,22 @@ logger = logging.getLogger(__name__)
 
 
 class CustomTransformer(BaseEstimator, TransformerMixin):
-    """ Class realization custom version of transformer """
+    """ Custom transformer class """
+    def __init__(self, features) -> NoReturn:
+        """ Class ctor """
+        self.transform_numerical = StandardScaler()
+        self.numerical_features = features.numerical_features
 
-    def __init__(self,
-                 params,
-                 ) -> None:
-        self.params = params
-        self.scaler = StandardScaler()
+    def fit(
+        self,
+        data: pd.DataFrame,
+        ) -> pd.DataFrame:
+        """ Fitting transformer for numerical features"""
+        self.transform_numerical.fit(data[self.numerical_features])
+        return self
 
-    # def fit(data: pd.DataFrame, )
+    def transform(self,
+        data: pd.DataFrame,
+        ):
+        """ Transform numerical feature """
+        return self.transform_numerical.transform(data[self.numerical_features])

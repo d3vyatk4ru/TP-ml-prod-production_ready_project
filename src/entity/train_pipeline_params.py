@@ -1,5 +1,7 @@
 """ Training model pipeline """
 
+# pylint: disable=R0902
+
 from dataclasses import dataclass
 from marshmallow_dataclass import class_schema
 import yaml
@@ -8,7 +10,6 @@ from .custom_transformer_params import TransformerParams
 from .split_params import SplittingParams
 from .feature_params import FeatureParams
 from .train_params import TrainingParams
-
 
 @dataclass
 class TrainingPipelineParams:

@@ -15,4 +15,5 @@ __all__ = [
     'build_feature_transformer',
     'drop_target',
     'extract_target',
+    'CustomTransformer',
 ]

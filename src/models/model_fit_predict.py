@@ -34,6 +34,8 @@ def train_model(features: pd.DataFrame,
 
     if train_params.model_type == 'LogisticRegression':
         model = LogisticRegression()
+    elif train_params.model_type == 'RandomForestClassifier':
+        model = RandomForestClassifier()
     else:
         logger.exception('Selected model is incorrect')
         raise NotImplementedError()

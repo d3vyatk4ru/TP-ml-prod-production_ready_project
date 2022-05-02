@@ -1,5 +1,7 @@
 """ Predicting pipline for ml model """
 
+# pylint: disable=E0401, E0611, E1120
+
 import logging
 import sys
 

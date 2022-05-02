@@ -1,5 +1,7 @@
 """ Training pipline for ml model """
 
+# pylint: disable=E0401, E0611, E1120
+
 import json
 import logging
 import sys
@@ -24,6 +26,10 @@ from features.make_features import (
     make_features,
 )
 
+from features.custom_transformer import (
+    CustomTransformer,
+)
+
 from models.model_fit_predict import (
     train_model,
     predict_model,
@@ -41,13 +47,8 @@ logger.addHandler(handler)
 
 def train_pipeline(config_path: str):
     """ train pipeline """
-    training_pipeline_params = read_training_pipeline_params(config_path)
-
-    return run_train_pipeline(training_pipeline_params)
-
-
-def run_train_pipeline(training_pipeline_params: TrainingPipelineParams):
-    """ Launching pipeline for training ml model """
+    training_pipeline_params: TrainingPipelineParams = \
+        read_training_pipeline_params(config_path)
 
     logger.info('Start train pipeline with %s...', training_pipeline_params.train_params.model_type)
 
@@ -77,9 +78,15 @@ def run_train_pipeline(training_pipeline_params: TrainingPipelineParams):
     logger.info('train_df.shape is equal %s', train_df.shape)
     logger.info('val_df.shape is equal %s', valid_df.shape)
 
-    transformer = build_feature_transformer(training_pipeline_params.feature_params)
+    if training_pipeline_params.custom_transformer_params.use_custom_transformer:
+        transformer = CustomTransformer(training_pipeline_params.feature_params)
+        transformer.fit(
+            data
+        )
+    else:
 
-    transformer.fit(train_df)
+        transformer = build_feature_transformer(training_pipeline_params.feature_params)
+        transformer.fit(train_df)
 
     save_transformer(transformer, training_pipeline_params.save_transformer)
 
@@ -90,11 +97,6 @@ def run_train_pipeline(training_pipeline_params: TrainingPipelineParams):
 
     model = train_model(
         train_features, train_target, training_pipeline_params.train_params
-    )
-
-    save_model(
-        model,
-        training_pipeline_params.save_model,
     )
 
     valid_feature = make_features(
@@ -117,11 +119,14 @@ def run_train_pipeline(training_pipeline_params: TrainingPipelineParams):
     with open(training_pipeline_params.metric_path, 'w', encoding='utf-8') as file_metrics:
         json.dump(metrics, file_metrics)
 
-    return metrics
+    save_model(
+        model,
+        training_pipeline_params.save_model,
+    )
 
 
 @click.command(name='train_pipeline')
-@click.argument('config_path', default='../configs/train_config.yaml')
+@click.argument('config_path', default='configs/train_config_log_reg.yaml')
 def train_pipeline_command(config_path: str):
     """ Make start for terminal """
     train_pipeline(config_path)
