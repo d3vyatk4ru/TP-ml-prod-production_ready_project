@@ -1,7 +1,7 @@
 import unittest
 
-from ..src.data import read_dataset, split_train_val_data
-from  ..src.entity import SplittingParams
+from src.data import read_dataset, split_train_val_data
+from src.entity import SplittingParams
 
 class TestProject(unittest.TestCase):
 
