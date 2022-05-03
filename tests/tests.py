@@ -15,7 +15,7 @@ class TestProject(unittest.TestCase):
 
         data = read_dataset('data/raw/heart_cleveland_upload.csv')
 
-        splitting_params = SplittingParams(random_state=42, val_size=0.1)
+        splitting_params = SplittingParams(random_state=42, test_size=0.1)
 
         train, test = split_train_val_data(data, splitting_params)
 
