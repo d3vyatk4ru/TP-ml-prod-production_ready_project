@@ -7,9 +7,13 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ~~~
-Usage:
+Usage logistic regression:
 ~~~
-python ml_example/train_pipeline.py configs/train_config.yaml
+python src/train_pipeline.py configs/train_config_log_reg.yaml
+~~~
+Usage random forest:
+~~~
+python src/train_pipeline.py configs/train_config_random_forest.yaml
 ~~~
 
 Test:
@@ -21,41 +25,34 @@ Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
+    ├── README.md               <- Правила Использования проекта.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── predicted           <- Предстазанные метки для predict_pipeline.py
+    │   └── raw                 <- Реальные данные.
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── models                  <- Модели, трансформеры и метрики.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── notebooks               <- Jupyter notebooks с предварительным анализом данных.
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    ├── requirements.txt        <- Необходимые пакеты для запуска обучения и предсказния.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── setup.py                <- Возможность установки проекта через менеджер pip.
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── ml_example                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
+    ├── src                     <- Код для запуска пайплана.
+    │   ├── __init__.py         <- Делает src Python модулем.
     │   │
-    │   ├── data           <- code to download or generate data
+    │   ├── data                <- Работа с данными.
     │   │
-    │   ├── features       <- code to turn raw data into features for modeling
+    │   ├── entity              <- Структуры с параметрами для работы модели.
     │   │
-    │   ├── models         <- code to train models and then use trained models to make
+    │   ├── features            <- Преобразование сырых данных к признакам дял модели.
     │   │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
-
+    │   ├── models              <- Тренировки модели и использование готовой модели.
+    │   │
+    │   ├── predict_pipeline.py <- Пайплайн для прогноза на данных
+    │   │
+    │   ├── train_pipeline.py   <- Пайплайн для тренировки модели
+    │
+    ├── tests                   <- Тесты
 
 --------
