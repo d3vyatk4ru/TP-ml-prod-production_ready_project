@@ -79,7 +79,7 @@ class TestProject(unittest.TestCase):
             train_df, feature_params
         )
 
-        self.assertEqual(train_target.shape, (1, 267))
+        self.assertEqual(train_target.shape, (267, 1))
 
         train_df = drop_target(
             train_df, feature_params
