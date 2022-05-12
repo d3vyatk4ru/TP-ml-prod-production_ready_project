@@ -5,7 +5,7 @@ from typing import NoReturn
 
 import pandas as pd
 from sklearn.preprocessing import (
-    StandardScaler,
+    MinMaxScaler,
 )
 
 from sklearn.base import (
@@ -23,7 +23,7 @@ class CustomTransformer(BaseEstimator, TransformerMixin):
     """ Custom transformer class """
     def __init__(self, features) -> NoReturn:
         """ Class ctor """
-        self.transform_numerical = StandardScaler()
+        self.transform_numerical = MinMaxScaler()
         self.numerical_features = features.numerical_features
 
     def fit(
